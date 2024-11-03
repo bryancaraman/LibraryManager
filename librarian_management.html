@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Librarian Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h2>Librarian Management</h2>
+
+    <!-- Add Librarian Section -->
+    <section id="addLibrarianSection">
+        <h3>Add New Librarian</h3>
+        <form id="addLibrarianForm">
+            <label for="librarianID">Librarian ID:</label>
+            <input type="text" id="librarianID" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+
+            <button type="submit">Add Librarian</button>
+        </form>
+    </section>
+
+    <!-- Update Librarian Section -->
+    <section id="updateLibrarianSection">
+        <h3>Update Librarian Information</h3>
+        <form id="updateLibrarianForm">
+            <label for="librarianID">Librarian ID:</label>
+            <input type="text" id="librarianID" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email">
+
+            <button type="submit">Update Librarian</button>
+        </form>
+    </section>
+
+    <!-- Delete Librarian Section -->
+    <section id="deleteLibrarianSection">
+        <h3>Delete Librarian</h3>
+        <form id="deleteLibrarianForm">
+            <label for="librarianID">Librarian ID:</label>
+            <input type="text" id="librarianID" required>
+
+            <button type="submit">Delete Librarian</button>
+        </form>
+    </section>
+
+    <script src="validation.js"></script>
+</body>
+</html>

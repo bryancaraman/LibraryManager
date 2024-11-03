@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Genre Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h2>Genre Management</h2>
+
+    <!-- Add Genre Section -->
+    <section id="addGenreSection">
+        <h3>Add New Genre</h3>
+        <form id="addGenreForm">
+            <label for="genreID">Genre ID:</label>
+            <input type="text" id="genreID" required>
+
+            <label for="genreName">Genre Name:</label>
+            <input type="text" id="genreName" required>
+
+            <label for="librarianID">Assign Librarian:</label>
+            <select id="librarianID" required></select>
+
+            <button type="submit">Add Genre</button>
+        </form>
+    </section>
+
+    <script src="validation.js"></script>
+</body>
+</html>

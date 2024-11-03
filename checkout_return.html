@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout and Returns</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h2>Checkout and Returns</h2>
+
+    <!-- Checkout Book Section -->
+    <section id="checkoutBookSection">
+        <h3>Checkout Book</h3>
+        <form id="checkoutForm">
+            <label for="userID">User ID:</label>
+            <select id="userID" required></select>
+
+            <label for="bookID">Book ID:</label>
+            <select id="bookID" required></select>
+
+            <label for="checkoutDate">Checkout Date:</label>
+            <input type="date" id="checkoutDate" required>
+
+            <label for="dueDate">Due Date:</label>
+            <input type="date" id="dueDate" readonly>
+
+            <button type="submit">Checkout Book</button>
+        </form>
+    </section>
+
+    <!-- Return Book Section -->
+    <section id="returnBookSection">
+        <h3>Return Book</h3>
+        <form id="returnForm">
+            <label for="userID">User ID:</label>
+            <select id="userID" required></select>
+
+            <label for="bookID">Book ID:</label>
+            <select id="bookID" required></select>
+
+            <label for="dateReturned">Date Returned:</label>
+            <input type="date" id="dateReturned" required>
+
+            <button type="submit">Return Book</button>
+        </form>
+    </section>
+
+    <script src="validation.js"></script>
+</body>
+</html>

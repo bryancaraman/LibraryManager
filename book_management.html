@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h2>Book Management</h2>
+
+    <!-- Add Book Section -->
+    <section id="addBookSection">
+        <h3>Add New Book</h3>
+        <form id="addBookForm">
+            <label for="bookID">Book ID:</label>
+            <input type="text" id="bookID" required>
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" required>
+
+            <label for="author">Author:</label>
+            <input type="text" id="author" required>
+
+            <label for="copiesInStock">Copies in Stock:</label>
+            <input type="number" id="copiesInStock" min="0" required>
+
+            <button type="submit">Add Book</button>
+        </form>
+    </section>
+
+    <!-- Update Book Section -->
+    <section id="updateBookSection">
+        <h3>Update Book Information</h3>
+        <form id="updateBookForm">
+            <label for="bookID">Book ID:</label>
+            <input type="text" id="bookID" required>
+
+            <label for="title">Title:</label>
+            <input type="text" id="title">
+
+            <label for="author">Author:</label>
+            <input type="text" id="author">
+
+            <label for="copiesInStock">Copies in Stock:</label>
+            <input type="number" id="copiesInStock" min="0">
+
+            <button type="submit">Update Book</button>
+        </form>
+    </section>
+
+    <!-- Delete Book Section -->
+    <section id="deleteBookSection">
+        <h3>Delete Book</h3>
+        <form id="deleteBookForm">
+            <label for="bookID">Book ID:</label>
+            <input type="text" id="bookID" required>
+
+            <button type="submit">Delete Book</button>
+        </form>
+    </section>
+
+    <!-- View Book Section -->
+    <section id="viewBookSection">
+        <h3>View Book Information</h3>
+        <form id="viewBookForm">
+            <label for="bookID">Book ID:</label>
+            <input type="text" id="bookID" required>
+
+            <button type="submit">View Book</button>
+        </form>
+    </section>
+
+    <script src="validation.js"></script>
+</body>
+</html>
