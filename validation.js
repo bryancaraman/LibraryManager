@@ -21,26 +21,22 @@ function validateForm(form) {
     form.querySelectorAll("input, select").forEach(input => {
         const { name, value, type } = input;
 
-        // Check for empty required fields
         if (input.hasAttribute("required") && value.trim() === "") {
             showError(input, `${name} is required.`);
             isValid = false;
             return;
         }
 
-        // Validate email format
         if (type === "email" && !validateEmail(value)) {
             showError(input, "Invalid email format.");
             isValid = false;
         }
 
-        // Validate phone number format (e.g., 123-456-7890)
         if (name === "PhoneNum" && !validatePhone(value)) {
             showError(input, "Invalid phone number format. Use 123-456-7890.");
             isValid = false;
         }
-
-        // Custom validation for date relationships in checkout form
+        
         if (form.id === "checkoutForm") {
             const checkoutDate = form.querySelector("#checkoutDate").value;
             const dueDate = form.querySelector("#dueDate").value;
