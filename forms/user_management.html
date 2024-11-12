@@ -60,6 +60,26 @@
         </form>
     </section>
 
+    <!-- Add User Name Form -->
+    <section id="addUserNameSection">
+        <h3>Update User Name</h3>
+        <form action="/add_user_name" method="POST">
+            <label for="userID">User ID:</label>
+            <input type="text" id="userID" name="userID" required>
+
+            <label for="fName">First Name:</label>
+            <input type="text" id="fName" name="fName" required>
+
+            <label for="mInit">Middle Initial:</label>
+            <input type="text" id="mInit" name="mInit">
+
+            <label for="lName">Last Name:</label>
+            <input type="text" id="lName" name="lName" required>
+
+            <button type="submit">Add User Name</button>
+        </form>
+    </section>
+
     <!-- View All Users -->
     <section id="viewUsersSection">
         <h3>All Users</h3>
@@ -67,6 +87,32 @@
     </section>
 
     <script>
+        function handleFormSubmission(formId, url) {
+            document.getElementById(formId).addEventListener('submit', function(event) {
+                event.preventDefault(); 
+
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.text())
+                .then(result => {
+                    alert(result);  
+                    event.target.reset();  
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+
+        handleFormSubmission('addUserSection', '/add_user');
+        handleFormSubmission('updateUserSection', '/update_user');
+        handleFormSubmission('deleteUserSection', '/delete_user');
+        handleFormSubmission('addUserNameSection', '/add_user_name');
+
         fetch('/view_users')
             .then(response => response.json())
             .then(data => {
@@ -83,4 +129,5 @@
 
 </body>
 </html>
+
 

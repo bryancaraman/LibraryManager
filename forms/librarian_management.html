@@ -23,28 +23,23 @@
         </form>
     </section>
 
-    <!-- Update Librarian Form -->
-    <section id="updateLibrarianSection">
-        <h3>Update Librarian</h3>
-        <form action="/update_librarian" method="POST">
+    <!-- Add Librarian Name Form -->
+    <section id="addLibrarianNameSection">
+        <h3>Add Librarian Name</h3>
+        <form action="/add_librarian_name" method="POST">
             <label for="librarianID">Librarian ID:</label>
             <input type="text" id="librarianID" name="librarianID" required>
 
-            <label for="libEmail">Email:</label>
-            <input type="email" id="libEmail" name="libEmail">
+            <label for="lFName">First Name:</label>
+            <input type="text" id="lFName" name="lFName" required>
 
-            <button type="submit">Update Librarian</button>
-        </form>
-    </section>
+            <label for="lMInit">Middle Initial:</label>
+            <input type="text" id="lMInit" name="lMInit">
 
-    <!-- Delete Librarian Form -->
-    <section id="deleteLibrarianSection">
-        <h3>Delete Librarian</h3>
-        <form action="/delete_librarian" method="POST">
-            <label for="librarianID">Librarian ID:</label>
-            <input type="text" id="librarianID" name="librarianID" required>
+            <label for="lLName">Last Name:</label>
+            <input type="text" id="lLName" name="lLName" required>
 
-            <button type="submit">Delete Librarian</button>
+            <button type="submit">Add Librarian Name</button>
         </form>
     </section>
 
@@ -71,3 +66,4 @@
 
 </body>
 </html>
+
