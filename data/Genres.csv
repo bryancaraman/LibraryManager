@@ -1,0 +1,11 @@
+Genre_ID,GName,Librarian_ID
+1,Fiction,1
+2,Non-Fiction,2
+3,Mystery,3
+4,Science Fiction,4
+5,Fantasy,5
+6,Historical,6
+7,Biography,7
+8,Self-Help,8
+9,Romance,9
+10,Horror,10
