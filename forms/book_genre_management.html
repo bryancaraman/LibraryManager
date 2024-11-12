@@ -2,27 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Book Genre Management</title>
+    <title>Book-Genre Management</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
 
-    <h2>Book Genre Management</h2>
+    <h2>Book-Genre Management</h2>
 
-    <!-- Assign Book to Genre Section -->
-    <section id="assignBookToGenreSection">
+    <!-- Assign Book to Genre Form -->
+    <section id="assignBookGenreSection">
         <h3>Assign Book to Genre</h3>
-        <form id="categorizeBookForm">
+        <form action="/assign_genre" method="POST">
             <label for="bookID">Book ID:</label>
-            <select id="bookID" required></select>
+            <input type="text" id="bookID" name="bookID" required>
 
             <label for="genreID">Genre ID:</label>
-            <select id="genreID" required></select>
+            <input type="text" id="genreID" name="genreID" required>
 
             <button type="submit">Assign Genre</button>
         </form>
     </section>
 
-    <script src="validation.js"></script>
+    <!-- Remove Book from Genre Form -->
+    <section id="removeBookGenreSection">
+        <h3>Remove Book from Genre</h3>
+        <form action="/remove_genre" method="POST">
+            <label for="bookID">Book ID:</label>
+            <input type="text" id="bookID" name="bookID" required>
+
+            <label for="genreID">Genre ID:</label>
+            <input type="text" id="genreID" name="genreID" required>
+
+            <button type="submit">Remove from Genre</button>
+        </form>
+    </section>
+
+    <!-- View All Book-Genre Assignments -->
+    <section id="viewBookGenresSection">
+        <h3>All Book-Genre Assignments</h3>
+        <div id="bookGenreTable"></div>
+    </section>
+
+    <script>
+        fetch('/view_book_genres')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.createElement('table');
+                table.innerHTML = '<tr><th>Book ID</th><th>Genre ID</th></tr>';
+                data.forEach(assignment => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${assignment.Book_ID}</td><td>${assignment.Genre_ID}</td>`;
+                    table.appendChild(row);
+                });
+                document.getElementById('bookGenreTable').appendChild(table);
+            });
+    </script>
+
 </body>
 </html>

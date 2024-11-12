@@ -2,50 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Checkout and Returns</title>
+    <title>Checkout and Return</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
 
-    <h2>Checkout and Returns</h2>
+    <h2>Checkout and Return</h2>
 
-    <!-- Checkout Book Section -->
+    <!-- Checkout Book Form -->
     <section id="checkoutBookSection">
         <h3>Checkout Book</h3>
-        <form id="checkoutForm">
+        <form action="/checkout_book" method="POST">
             <label for="userID">User ID:</label>
-            <select id="userID" required></select>
+            <input type="text" id="userID" name="userID" required>
 
             <label for="bookID">Book ID:</label>
-            <select id="bookID" required></select>
+            <input type="text" id="bookID" name="bookID" required>
 
             <label for="checkoutDate">Checkout Date:</label>
-            <input type="date" id="checkoutDate" required>
-
-            <label for="dueDate">Due Date:</label>
-            <input type="date" id="dueDate" readonly>
+            <input type="date" id="checkoutDate" name="checkoutDate" required>
 
             <button type="submit">Checkout Book</button>
         </form>
     </section>
 
-    <!-- Return Book Section -->
+    <!-- Return Book Form -->
     <section id="returnBookSection">
         <h3>Return Book</h3>
-        <form id="returnForm">
+        <form action="/return_book" method="POST">
             <label for="userID">User ID:</label>
-            <select id="userID" required></select>
+            <input type="text" id="userID" name="userID" required>
 
             <label for="bookID">Book ID:</label>
-            <select id="bookID" required></select>
+            <input type="text" id="bookID" name="bookID" required>
 
-            <label for="dateReturned">Date Returned:</label>
-            <input type="date" id="dateReturned" required>
+            <label for="returnDate">Return Date:</label>
+            <input type="date" id="returnDate" name="returnDate" required>
 
             <button type="submit">Return Book</button>
         </form>
     </section>
 
-    <script src="validation.js"></script>
+    <!-- View All Checked Out Books -->
+    <section id="checkedOutBooksSection">
+        <h3>Checked Out Books</h3>
+        <div id="checkedOutTable"></div>
+    </section>
+
+    <script>
+        fetch('/view_checked_out')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.createElement('table');
+                table.innerHTML = '<tr><th>Checkout ID</th><th>User ID</th><th>Book ID</th><th>Checkout Date</th><th>Due Date</th><th>Date Returned</th></tr>';
+                data.forEach(entry => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${entry.Checkout_ID}</td><td>${entry.User_ID}</td><td>${entry.Book_ID}</td><td>${entry.Checkout_Date}</td><td>${entry.Due_Date}</td><td>${entry.Date_Returned || 'Not Returned'}</td>`;
+                    table.appendChild(row);
+                });
+                document.getElementById('checkedOutTable').appendChild(table);
+            });
+    </script>
+
 </body>
 </html>

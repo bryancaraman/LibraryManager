@@ -9,68 +9,78 @@
 
     <h2>User Management</h2>
 
-    <!-- Add User Section -->
+    <!-- Add User Form -->
     <section id="addUserSection">
         <h3>Add New User</h3>
-        <form id="addUserForm">
+        <form action="/add_user" method="POST">
             <label for="userID">User ID:</label>
-            <input type="text" id="userID" name="User ID" required>
+            <input type="text" id="userID" name="userID" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="Email" required>
+            <input type="email" id="email" name="email" required>
 
             <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="PhoneNum" required>
+            <input type="tel" id="phone" name="phone" required>
 
             <label for="address">Address:</label>
-            <input type="text" id="address" name="Address" required>
+            <input type="text" id="address" name="address" required>
 
             <button type="submit">Add User</button>
         </form>
     </section>
 
-    <!-- Update User Section -->
+    <!-- Update User Form -->
     <section id="updateUserSection">
-        <h3>Update User Information</h3>
-        <form id="updateUserForm">
+        <h3>Update User</h3>
+        <form action="/update_user" method="POST">
             <label for="userID">User ID:</label>
-            <input type="text" id="userID" name="User ID" required>
+            <input type="text" id="userID" name="userID" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="Email">
+            <input type="email" id="email" name="email">
 
             <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="PhoneNum">
+            <input type="tel" id="phone" name="phone">
 
             <label for="address">Address:</label>
-            <input type="text" id="address" name="Address">
+            <input type="text" id="address" name="address">
 
             <button type="submit">Update User</button>
         </form>
     </section>
 
-    <!-- Delete User Section -->
+    <!-- Delete User Form -->
     <section id="deleteUserSection">
         <h3>Delete User</h3>
-        <form id="deleteUserForm">
+        <form action="/delete_user" method="POST">
             <label for="userID">User ID:</label>
-            <input type="text" id="userID" name="User ID" required>
+            <input type="text" id="userID" name="userID" required>
 
             <button type="submit">Delete User</button>
         </form>
     </section>
 
-    <!-- View User Section -->
-    <section id="viewUserSection">
-        <h3>View User Information</h3>
-        <form id="viewUserForm">
-            <label for="userID">User ID:</label>
-            <input type="text" id="userID" required>
-
-            <button type="submit">View User</button>
-        </form>
+    <!-- View All Users -->
+    <section id="viewUsersSection">
+        <h3>All Users</h3>
+        <div id="userTable"></div>
     </section>
 
-    <script src="validation.js"></script>
+    <script>
+        fetch('/view_users')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.createElement('table');
+                table.innerHTML = '<tr><th>User ID</th><th>Email</th><th>Phone Number</th><th>Address</th></tr>';
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${user.User_ID}</td><td>${user.UEmail}</td><td>${user.PhoneNum}</td><td>${user.Address}</td>`;
+                    table.appendChild(row);
+                });
+                document.getElementById('userTable').appendChild(table);
+            });
+    </script>
+
 </body>
 </html>
+

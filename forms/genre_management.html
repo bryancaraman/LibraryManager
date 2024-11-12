@@ -9,23 +9,71 @@
 
     <h2>Genre Management</h2>
 
-    <!-- Add Genre Section -->
+    <!-- Add Genre Form -->
     <section id="addGenreSection">
         <h3>Add New Genre</h3>
-        <form id="addGenreForm">
+        <form action="/add_genre" method="POST">
             <label for="genreID">Genre ID:</label>
-            <input type="text" id="genreID" required>
+            <input type="text" id="genreID" name="genreID" required>
 
-            <label for="genreName">Genre Name:</label>
-            <input type="text" id="genreName" required>
+            <label for="gName">Genre Name:</label>
+            <input type="text" id="gName" name="gName" required>
 
-            <label for="librarianID">Assign Librarian:</label>
-            <select id="librarianID" required></select>
+            <label for="librarianID">Assigned Librarian ID:</label>
+            <input type="text" id="librarianID" name="librarianID" required>
 
             <button type="submit">Add Genre</button>
         </form>
     </section>
 
-    <script src="validation.js"></script>
+    <!-- Update Genre Form -->
+    <section id="updateGenreSection">
+        <h3>Update Genre</h3>
+        <form action="/update_genre" method="POST">
+            <label for="genreID">Genre ID:</label>
+            <input type="text" id="genreID" name="genreID" required>
+
+            <label for="gName">Genre Name:</label>
+            <input type="text" id="gName" name="gName">
+
+            <label for="librarianID">Assigned Librarian ID:</label>
+            <input type="text" id="librarianID" name="librarianID">
+
+            <button type="submit">Update Genre</button>
+        </form>
+    </section>
+
+    <!-- Delete Genre Form -->
+    <section id="deleteGenreSection">
+        <h3>Delete Genre</h3>
+        <form action="/delete_genre" method="POST">
+            <label for="genreID">Genre ID:</label>
+            <input type="text" id="genreID" name="genreID" required>
+
+            <button type="submit">Delete Genre</button>
+        </form>
+    </section>
+
+    <!-- View All Genres -->
+    <section id="viewGenresSection">
+        <h3>All Genres</h3>
+        <div id="genreTable"></div>
+    </section>
+
+    <script>
+        fetch('/view_genres')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.createElement('table');
+                table.innerHTML = '<tr><th>Genre ID</th><th>Genre Name</th><th>Librarian ID</th></tr>';
+                data.forEach(genre => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${genre.Genre_ID}</td><td>${genre.GName}</td><td>${genre.Librarian_ID}</td>`;
+                    table.appendChild(row);
+                });
+                document.getElementById('genreTable').appendChild(table);
+            });
+    </script>
+
 </body>
 </html>

@@ -9,68 +9,78 @@
 
     <h2>Book Management</h2>
 
-    <!-- Add Book Section -->
+    <!-- Add Book Form -->
     <section id="addBookSection">
         <h3>Add New Book</h3>
-        <form id="addBookForm">
+        <form action="/add_book" method="POST">
             <label for="bookID">Book ID:</label>
-            <input type="text" id="bookID" required>
+            <input type="text" id="bookID" name="bookID" required>
 
             <label for="title">Title:</label>
-            <input type="text" id="title" required>
+            <input type="text" id="title" name="title" required>
 
             <label for="author">Author:</label>
-            <input type="text" id="author" required>
+            <input type="text" id="author" name="author" required>
 
             <label for="copiesInStock">Copies in Stock:</label>
-            <input type="number" id="copiesInStock" min="0" required>
+            <input type="number" id="copiesInStock" name="copiesInStock" min="0" required>
 
             <button type="submit">Add Book</button>
         </form>
     </section>
 
-    <!-- Update Book Section -->
+    <!-- Update Book Form -->
     <section id="updateBookSection">
-        <h3>Update Book Information</h3>
-        <form id="updateBookForm">
+        <h3>Update Book</h3>
+        <form action="/update_book" method="POST">
             <label for="bookID">Book ID:</label>
-            <input type="text" id="bookID" required>
+            <input type="text" id="bookID" name="bookID" required>
 
             <label for="title">Title:</label>
-            <input type="text" id="title">
+            <input type="text" id="title" name="title">
 
             <label for="author">Author:</label>
-            <input type="text" id="author">
+            <input type="text" id="author" name="author">
 
             <label for="copiesInStock">Copies in Stock:</label>
-            <input type="number" id="copiesInStock" min="0">
+            <input type="number" id="copiesInStock" name="copiesInStock" min="0">
 
             <button type="submit">Update Book</button>
         </form>
     </section>
 
-    <!-- Delete Book Section -->
+    <!-- Delete Book Form -->
     <section id="deleteBookSection">
         <h3>Delete Book</h3>
-        <form id="deleteBookForm">
+        <form action="/delete_book" method="POST">
             <label for="bookID">Book ID:</label>
-            <input type="text" id="bookID" required>
+            <input type="text" id="bookID" name="bookID" required>
 
             <button type="submit">Delete Book</button>
         </form>
     </section>
 
-    <!-- View Book Section -->
-    <section id="viewBookSection">
-        <h3>View Book Information</h3>
-        <form id="viewBookForm">
-            <label for="bookID">Book ID:</label>
-            <input type="text" id="bookID" required>
-
-            <button type="submit">View Book</button>
-        </form>
+    <!-- View All Books -->
+    <section id="viewBooksSection">
+        <h3>All Books</h3>
+        <div id="bookTable"></div>
     </section>
 
-    <script src="validation.js"></script>
+    <script>
+        fetch('/view_books')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.createElement('table');
+                table.innerHTML = '<tr><th>Book ID</th><th>Title</th><th>Author</th><th>Copies in Stock</th></tr>';
+                data.forEach(book => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${book.Book_ID}</td><td>${book.Title}</td><td>${book.Author}</td><td>${book.CopiesInStock}</td>`;
+                    table.appendChild(row);
+                });
+                document.getElementById('bookTable').appendChild(table);
+            });
+    </script>
+
 </body>
 </html>
+
