@@ -53,7 +53,22 @@ app.post('/delete_user', (req, res) => {
 });
 
 app.get('/view_users', (req, res) => {
-    const sql = 'SELECT * FROM Users';
+    const sql = `
+        SELECT 
+            Users.User_ID, 
+            Users_name.FName, 
+            Users_name.MInit, 
+            Users_name.LName, 
+            Users.UEmail, 
+            Users.PhoneNum, 
+            Users.Address
+        FROM 
+            Users
+        INNER JOIN 
+            Users_name 
+        ON 
+            Users.User_ID = Users_name.User_ID;
+    `;
     db.query(sql, (err, results) => {
         if (err) throw err;
         res.json(results);
@@ -158,7 +173,7 @@ app.post('/delete_librarian', (req, res) => {
 });
 
 app.get('/view_librarians', (req, res) => {
-    const sql = 'SELECT * FROM Librarians ORDER BY Librarian_ID';
+    const sql = 'SELECT * FROM Librarians, Librarians_name WHERE Librarians.Librarian_ID = Librarians_name.Librarian_ID ORDER BY Librarians.Librarian_ID';
     db.query(sql, (err, results) => {
         if (err) throw err;
         res.json(results);
@@ -192,14 +207,6 @@ app.post('/delete_librarian_name', (req, res) => {
     });
 });
 
-app.get('/view_librarian_names', (req, res) => {
-    const sql = 'SELECT * FROM Librarians_name';
-    db.query(sql, (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
-});
-
 app.get('/view_checked_out', (req, res) => {
     const sql = `
         SELECT c.Checkout_ID, c.User_ID, u.UEmail, c.Book_ID, b.Title, c.Checkout_Date, c.Due_Date
@@ -211,6 +218,143 @@ app.get('/view_checked_out', (req, res) => {
     db.query(sql, (err, results) => {
         if (err) throw err;
         res.json(results);
+    });
+});
+
+app.post('/checkout_book', (req, res) => {
+    const { userID, bookID, checkoutDate } = req.body;
+
+    if (!userID || !bookID || !checkoutDate) {
+        return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const dueDate = new Date(checkoutDate);
+    dueDate.setDate(dueDate.getDate() + 14); 
+
+    const sql = `
+        INSERT INTO Checkouts (User_ID, Book_ID, Checkout_Date, Due_Date)
+        VALUES (?, ?, ?, ?)
+    `;
+
+    db.query(sql, [userID, bookID, checkoutDate, dueDate.toISOString().split('T')[0]], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'An error occurred while checking out the book.' });
+        }
+
+        res.json({ message: 'Book checked out successfully.' });
+    });
+});
+
+// Validating input
+app.post('/return_book', (req, res) => {
+    const { userID, bookID, returnDate } = req.body;
+    if (!userID || !bookID || !returnDate) {
+        return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const sql = `
+        UPDATE Checkouts
+        SET Date_Returned = ?
+        WHERE User_ID = ? AND Book_ID = ? AND Date_Returned IS NULL
+    `;
+
+    db.query(sql, [returnDate, userID, bookID], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'An error occurred while updating the record.' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'No matching checkout record found or book already returned.' });
+        }
+
+        res.json({ message: 'Book return recorded successfully.' });
+    });
+});
+
+app.post('/add_genre', (req, res) => {
+    const sql = `
+        INSERT INTO Genres (Genre_ID, GName, Librarian_ID)
+        VALUES (?, ?, ?)
+    `;
+    const { genreID, gName, librarianID } = req.body;
+
+    db.query(sql, [genreID, gName, librarianID], (err, results) => {
+        if (err) throw err;
+        res.json({ message: 'Genre added successfully.' });
+    });
+});
+
+app.post('/update_genre', (req, res) => {
+    const sql = `
+        UPDATE Genres
+        SET GName = ?, Librarian_ID = ?
+        WHERE Genre_ID = ?
+    `;
+    const { genreID, gName, librarianID } = req.body;
+
+    db.query(sql, [gName, librarianID, genreID], (err, results) => {
+        if (err) throw err;
+        res.json({ message: 'Genre updated successfully.' });
+    });
+});
+
+app.post('/delete_genre', (req, res) => {
+    const sql = `
+        DELETE FROM Genres
+        WHERE Genre_ID = ?
+    `;
+    const { genreID } = req.body;
+
+    db.query(sql, [genreID], (err, results) => {
+        if (err) throw err;
+        res.json({ message: 'Genre deleted successfully.' });
+    });
+});
+
+app.get('/view_genres', (req, res) => {
+    const sql = `
+        SELECT 
+            Genre_ID, 
+            GName, 
+            Librarian_ID
+        FROM Genres
+        ORDER BY Genre_ID;
+    `;
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'An error occurred while retrieving genres.' });
+        }
+        res.json(results);
+    });
+});
+
+app.post('/assign_genre', (req, res) => {
+    const sql = `
+        INSERT INTO Belongs (Book_ID, Genre_ID)
+        VALUES (?, ?)
+    `;
+    const { bookID, genreID } = req.body;
+
+    db.query(sql, [bookID, genreID], (err, result) => {
+        if (err) throw err;
+        res.json({ message: 'Book successfully assigned to genre.' });
+    });
+});
+
+app.post('/remove_genre', (req, res) => {
+    const sql = `
+        DELETE FROM Belongs
+        WHERE Book_ID = ? AND Genre_ID = ?
+    `;
+    const { bookID, genreID } = req.body;
+
+    db.query(sql, [bookID, genreID], (err, result) => {
+        if (err) throw err;
+        res.json({ message: 'Book successfully removed from genre.' });
     });
 });
 
@@ -226,6 +370,26 @@ app.get('/view_book_genre_assignments', (req, res) => {
         res.json(results);
     });
 });
+
+app.get('/view_book_genres', (req, res) => {
+    const sql = `
+        SELECT 
+            b.Book_ID, 
+            b.Title AS Book_Title, 
+            g.Genre_ID, 
+            g.GName AS Genre_Name
+        FROM Belongs AS bg
+        JOIN Books AS b ON bg.Book_ID = b.Book_ID
+        JOIN Genres AS g ON bg.Genre_ID = g.Genre_ID
+        ORDER BY b.Book_ID, g.Genre_ID
+    `;
+
+    db.query(sql, (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

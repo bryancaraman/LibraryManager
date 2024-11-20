@@ -23,6 +23,17 @@
         </form>
     </section>
 
+    <!-- Delete Librarian Form -->
+    <section id="deleteLibrarianSection">
+        <h3>Delete Librarian</h3>
+        <form action="/delete_librarian" method="POST">
+            <label for="librarianID">Librarian ID:</label>
+            <input type="text" id="librarianID" name="librarianID" required>
+    
+            <button type="submit">Delete Librarian</button>
+        </form>
+    </section>    
+
     <!-- Add Librarian Name Form -->
     <section id="addLibrarianNameSection">
         <h3>Add Librarian Name</h3>
@@ -44,20 +55,45 @@
     </section>
 
     <!-- View All Librarians -->
-    <section id="viewLibrariansSection">
+    <section id="viewSection">
         <h3>All Librarians</h3>
         <div id="librarianTable"></div>
     </section>
 
     <script>
+        function handleFormSubmission(formId, url) {
+            document.getElementById(formId).addEventListener('submit', function(event) {
+                event.preventDefault(); 
+
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.text())
+                .then(result => {
+                    alert(result);  
+                    event.target.reset();  
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+
+        handleFormSubmission('addLibrarianSection', '/add_librarian');
+        handleFormSubmission('addLibrarianNameSection', '/add_librarian_name');
+        handleFormSubmission('deleteLibrarianSection', '/delete_librarian');
+
         fetch('/view_librarians')
             .then(response => response.json())
             .then(data => {
                 const table = document.createElement('table');
-                table.innerHTML = '<tr><th>Librarian ID</th><th>Email</th></tr>';
+                table.innerHTML = '<tr><th>Librarian ID</th><th>First Name</th><th>Last Name</th><th>Email</th></tr>';
                 data.forEach(lib => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td>${lib.Librarian_ID}</td><td>${lib.LibEmail}</td>`;
+                    row.innerHTML = `<td>${lib.Librarian_ID}</td><td>${lib.L_FName}</td><td>${lib.L_LName}</td><td>${lib.LibEmail}</td>`;
                     table.appendChild(row);
                 });
                 document.getElementById('librarianTable').appendChild(table);

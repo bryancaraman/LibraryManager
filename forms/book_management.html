@@ -61,12 +61,37 @@
     </section>
 
     <!-- View All Books -->
-    <section id="viewBooksSection">
+    <section id="viewSection">
         <h3>All Books</h3>
         <div id="bookTable"></div>
     </section>
 
     <script>
+        function handleFormSubmission(formId, url) {
+            document.getElementById(formId).addEventListener('submit', function(event) {
+                event.preventDefault(); 
+
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.text())
+                .then(result => {
+                    alert(result);  
+                    event.target.reset();  
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+
+        handleFormSubmission('addBookSection', '/add_book');
+        handleFormSubmission('updateBookSection', '/update_book');
+        handleFormSubmission('deleteBookSection', '/delete_book');
+
         fetch('/view_books')
             .then(response => response.json())
             .then(data => {

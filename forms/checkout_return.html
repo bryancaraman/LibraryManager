@@ -44,20 +44,44 @@
     </section>
 
     <!-- View All Checked Out Books -->
-    <section id="checkedOutBooksSection">
+    <section id="viewSection">
         <h3>Checked Out Books</h3>
         <div id="checkedOutTable"></div>
     </section>
 
     <script>
+        function handleFormSubmission(formId, url) {
+            document.getElementById(formId).addEventListener('submit', function(event) {
+                event.preventDefault(); 
+
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.text())
+                .then(result => {
+                    alert(result);  
+                    event.target.reset();  
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+
+        handleFormSubmission('checkoutBookSection', '/checkout_book');
+        handleFormSubmission('returnBookSection', '/return_book');
+
         fetch('/view_checked_out')
             .then(response => response.json())
             .then(data => {
                 const table = document.createElement('table');
-                table.innerHTML = '<tr><th>Checkout ID</th><th>User ID</th><th>Book ID</th><th>Checkout Date</th><th>Due Date</th><th>Date Returned</th></tr>';
+                table.innerHTML = '<tr><th>Checkout ID</th><th>User ID</th><th>Email</th><th>Book ID</th><th>Title</th><th>Checkout Date</th><th>Due Date</th></tr>';
                 data.forEach(entry => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td>${entry.Checkout_ID}</td><td>${entry.User_ID}</td><td>${entry.Book_ID}</td><td>${entry.Checkout_Date}</td><td>${entry.Due_Date}</td><td>${entry.Date_Returned || 'Not Returned'}</td>`;
+                    row.innerHTML = `<td>${entry.Checkout_ID}</td><td>${entry.User_ID}</td><td>${entry.UEmail}</td><td>${entry.Book_ID}</td><td>${entry.Title}</td><td>${entry.Checkout_Date}</td><td>${entry.Due_Date}</td>`;
                     table.appendChild(row);
                 });
                 document.getElementById('checkedOutTable').appendChild(table);

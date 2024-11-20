@@ -55,12 +55,37 @@
     </section>
 
     <!-- View All Genres -->
-    <section id="viewGenresSection">
+    <section id="viewSection">
         <h3>All Genres</h3>
         <div id="genreTable"></div>
     </section>
 
     <script>
+        function handleFormSubmission(formId, url) {
+            document.getElementById(formId).addEventListener('submit', function(event) {
+                event.preventDefault(); 
+
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.text())
+                .then(result => {
+                    alert(result);  
+                    event.target.reset();  
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+
+        handleFormSubmission('addGenreSection', '/add_genre');
+        handleFormSubmission('updateGenreSection', '/update_genre');
+        handleFormSubmission('deleteGenreSection', '/delete_genre');
+
         fetch('/view_genres')
             .then(response => response.json())
             .then(data => {

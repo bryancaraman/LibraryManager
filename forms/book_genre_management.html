@@ -38,20 +38,49 @@
     </section>
 
     <!-- View All Book-Genre Assignments -->
-    <section id="viewBookGenresSection">
+    <section id="viewSection">
         <h3>All Book-Genre Assignments</h3>
         <div id="bookGenreTable"></div>
     </section>
 
     <script>
+        function handleFormSubmission(formId, url) {
+            document.getElementById(formId).addEventListener('submit', function(event) {
+                event.preventDefault(); 
+
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.text())
+                .then(result => {
+                    alert(result);  
+                    event.target.reset();  
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+
+        handleFormSubmission('assignBookGenreSection', '/assign_genre');
+        handleFormSubmission('removeBookGenreSection', '/remove_genre');
+
         fetch('/view_book_genres')
             .then(response => response.json())
             .then(data => {
                 const table = document.createElement('table');
-                table.innerHTML = '<tr><th>Book ID</th><th>Genre ID</th></tr>';
+                table.innerHTML = '<tr><th>Book ID</th><th>Book Title</th><th>Genre ID</th><th>Genre Name</th></tr>';
                 data.forEach(assignment => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td>${assignment.Book_ID}</td><td>${assignment.Genre_ID}</td>`;
+                    row.innerHTML = `
+                        <td>${assignment.Book_ID}</td>
+                        <td>${assignment.Book_Title}</td>
+                        <td>${assignment.Genre_ID}</td>
+                        <td>${assignment.Genre_Name}</td>
+                    `;
                     table.appendChild(row);
                 });
                 document.getElementById('bookGenreTable').appendChild(table);

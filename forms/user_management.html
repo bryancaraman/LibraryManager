@@ -81,7 +81,7 @@
     </section>
 
     <!-- View All Users -->
-    <section id="viewUsersSection">
+    <section id="viewSection">
         <h3>All Users</h3>
         <div id="userTable"></div>
     </section>
@@ -117,10 +117,10 @@
             .then(response => response.json())
             .then(data => {
                 const table = document.createElement('table');
-                table.innerHTML = '<tr><th>User ID</th><th>Email</th><th>Phone Number</th><th>Address</th></tr>';
+                table.innerHTML = '<tr><th>User ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Phone Number</th><th>Address</th></tr>';
                 data.forEach(user => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td>${user.User_ID}</td><td>${user.UEmail}</td><td>${user.PhoneNum}</td><td>${user.Address}</td>`;
+                    row.innerHTML = `<td>${user.User_ID}</td><td>${user.FName}</td><td>${user.LName}</td><td>${user.UEmail}</td><td>${user.PhoneNum}</td><td>${user.Address}</td>`;
                     table.appendChild(row);
                 });
                 document.getElementById('userTable').appendChild(table);

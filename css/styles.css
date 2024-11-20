@@ -122,3 +122,32 @@ button:active {
 .nav-links a:hover {
     color: #e94560;
 }
+
+#viewSection {
+    position: relative;
+    margin: 30px auto;
+    padding: 20px; 
+    background-color: #ffffff; 
+    width: 120%; 
+    max-width: 1400px; 
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    overflow-x: auto; 
+    left: -10%;
+}
+
+#viewSection th,
+#viewSection td {
+    text-align: left; 
+    padding: 10px;
+    border: 1px solid #ddd; 
+}
+
+#viewSection th {
+    background-color: #f4f4f4; 
+    font-weight: bold; 
+}
+
+
+
