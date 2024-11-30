@@ -246,7 +246,6 @@ app.post('/checkout_book', (req, res) => {
     });
 });
 
-// Validating input
 app.post('/return_book', (req, res) => {
     const { userID, bookID, returnDate } = req.body;
     if (!userID || !bookID || !returnDate) {
